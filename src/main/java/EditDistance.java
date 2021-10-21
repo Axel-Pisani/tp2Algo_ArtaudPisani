@@ -2,22 +2,26 @@ public class EditDistance {
 
     public static int distanceBetween(String word, String comparedWord) {
         int distance = 0;
-        distance = distanceBetween(word, comparedWord, distance);
-        return distance;
-    }
+        int endIndexWord = word.length() - 1;
+        int endIndexComparedWord = comparedWord.length() - 1;
 
-    private static int distanceBetween(String word, String comparedWord, int distance) {
-        if (word.length() == 0 && comparedWord.length() == 0) return distance;
-        else if (word.length() == 0) // ajout d'une lettre
-            distance = distanceBetween(word, comparedWord.substring(0, comparedWord.length() - 1), distance) + 1;
-        else if (comparedWord.length() == 0) // suppression d'une lettre
-            distance = distanceBetween(word.substring(0, word.length() - 1), comparedWord, distance) + 1;
-        else if (word.charAt(word.length() - 1) != comparedWord.charAt(comparedWord.length() - 1)) // modification d'une lettre
-            distance = distanceBetween(word.substring(0, word.length() - 1),
-                    comparedWord.substring(0, comparedWord.length() - 1), distance) + 1;
-        else //dernière lettre identique
-            distance = distanceBetween(word.substring(0, word.length() - 1),
-                    comparedWord.substring(0, comparedWord.length() - 1), distance);
+        while (endIndexWord >= 0 || endIndexComparedWord >= 0) {
+            if (endIndexWord == -1) { // ajout d'une lettre
+                distance++;
+                endIndexComparedWord--;
+            } else if (endIndexComparedWord == -1) { // suppression d'une lettre
+                distance++;
+                endIndexWord--;
+            } else if (word.charAt(endIndexWord) != comparedWord.charAt(endIndexComparedWord)) { // modification d'une lettre
+                distance++;
+                endIndexWord--;
+                endIndexComparedWord--;
+            } else { //dernière lettre identique
+                endIndexWord--;
+                endIndexComparedWord--;
+            }
+        }
+
         return distance;
     }
 }
