@@ -1,27 +1,28 @@
 public class EditDistance {
 
     public static int distanceBetween(String word, String comparedWord) {
-        int distance = 0;
-        int endIndexWord = word.length() - 1;
-        int endIndexComparedWord = comparedWord.length() - 1;
+        int[][] distances = new int[word.length()+1][comparedWord.length()+1];
 
-        while (endIndexWord >= 0 || endIndexComparedWord >= 0) {
-            if (endIndexWord == -1) { // ajout d'une lettre
-                distance++;
-                endIndexComparedWord--;
-            } else if (endIndexComparedWord == -1) { // suppression d'une lettre
-                distance++;
-                endIndexWord--;
-            } else if (word.charAt(endIndexWord) != comparedWord.charAt(endIndexComparedWord)) { // modification d'une lettre
-                distance++;
-                endIndexWord--;
-                endIndexComparedWord--;
-            } else { //dernière lettre identique
-                endIndexWord--;
-                endIndexComparedWord--;
-            }
+        for (int index = 0 ; index < word.length() ; index++) {
+            distances[index][0] = index;
+        }
+        for (int index = 0 ; index < comparedWord.length() ; index++) {
+            distances[0][index] = index;
         }
 
-        return distance;
+        for (int i = 0 ; i < word.length() ; i++) {
+            for (int j = 0 ; j < comparedWord.length() ; j++) {
+                if (word.charAt(i) == comparedWord.charAt(j)) {
+                    distances[i+1][j+1] = distances[i][j];
+                } else if (distances[i][j] <= distances[i+1][j] && distances[i][j] <= distances[i][j+1]) {
+                    distances[i+1][j+1] = distances[i][j] + 1;
+                } else if (distances[i+1][j] <= distances[i][j]) {
+                    distances[i+1][j+1] = distances[i+1][j] + 1;
+                } else {
+                    distances[i+1][j+1] = distances[i][j+1] + 1;
+                }
+            }
+        }
+        return distances[distances.length-1][distances[0].length-1];
     }
 }

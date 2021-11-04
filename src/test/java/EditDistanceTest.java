@@ -12,5 +12,6 @@ public class EditDistanceTest {
         assertThat(EditDistance.distanceBetween("azertyuiop", "qwertyuiop"), equalTo(2));
         assertThat(EditDistance.distanceBetween("Test", "test"), equalTo(1));
         assertThat(EditDistance.distanceBetween("mot", "test"), equalTo(3));
+        assertThat(EditDistance.distanceBetween("logarytmique", "algorithmique"), equalTo(5));
     }
 }
